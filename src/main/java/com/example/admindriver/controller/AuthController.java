@@ -1,10 +1,10 @@
 package com.example.admindriver.controller;
 
+import com.example.admindriver.dto.AuthRequest;
 import com.example.admindriver.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +21,15 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public String login(@RequestBody AuthRequest request) {
 
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getUsername(),
-                        user.getPassword()
+                        request.getUsername(),
+                        request.getPassword()
                 )
         );
 
-        return jwtUtil.generateToken(user.getUsername());
+        return jwtUtil.generateToken(request.getUsername());
     }
 }
