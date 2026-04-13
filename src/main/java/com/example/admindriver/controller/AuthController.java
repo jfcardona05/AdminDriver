@@ -1,6 +1,8 @@
 package com.example.admindriver.controller;
 
 import com.example.admindriver.dto.AuthRequest;
+import com.example.admindriver.model.UserEntity;
+import com.example.admindriver.repository.UserRepository;
 import com.example.admindriver.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,5 +33,14 @@ public class AuthController {
         );
 
         return jwtUtil.generateToken(request.getUsername());
+    }
+
+    @Autowired
+    private UserRepository repo;
+
+    @PostMapping("/register")
+    public UserEntity register(@RequestBody UserEntity user) {
+        user.setRole("DRIVER");
+        return repo.save(user);
     }
 }
